@@ -121,7 +121,7 @@ Para REFLEXÃO: {"validation":"...","insight":"...","growth":"...","question":".
 
 async function callClaude(messages, lang, systemOverride) {
   const system = systemOverride || (lang === "pt" ? SYSTEM_PT : SYSTEM_EN);
-  const res = await fetch("/api/chat", {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
     method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:1500, system, messages }),
   });
@@ -191,15 +191,17 @@ function CoachTab({ lang }) {
         <label style={S.label}>{t.ageLabel}</label>
         <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16}}>
           {AGE_IDS.map((id,i)=>(
-            <button key={id} onClick={()=>toggleAge(id)} style={{...S.chip,background:ages.includes(id)?"#c17f5a":"#f5f0ea",color:ages.includes(id)?"#fff":"#5a4a3a"}}>{t.ages[i]}</button>
+            <button key={id} onPointerDown={()=>toggleAge(id)} style={{...S.chip,background:ages.includes(id)?"#c17f5a":"#f5f0ea",color:ages.includes(id)?"#fff":"#5a4a3a", WebkitTapHighlightColor:"transparent"}}>{t.ages[i]}</button>
           ))}
         </div>
         <label style={S.label}>{t.situationLabel}</label>
         <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:10}}>
-          {t.starters.map(s=><button key={s} onClick={()=>setSituation(s)} style={S.starter}>{s}</button>)}
+          {t.starters.map(s=>(
+            <button key={s} onPointerDown={()=>setSituation(s)} style={{...S.starter, WebkitTapHighlightColor:"transparent"}}>{s}</button>
+          ))}
         </div>
-        <textarea value={situation} onChange={e=>setSituation(e.target.value)} placeholder={t.situationPlaceholder} style={S.textarea} rows={4}/>
-        <button onClick={handleSubmit} disabled={!situation.trim()||loading} style={{...S.primaryBtn,opacity:!situation.trim()||loading?0.5:1}}>{t.coachBtn}</button>
+        <textarea value={situation} onChange={e=>setSituation(e.target.value)} onInput={e=>setSituation(e.target.value)} placeholder={t.situationPlaceholder} style={S.textarea} rows={4}/>
+        <button onPointerDown={!situation.trim()||loading ? undefined : handleSubmit} style={{...S.primaryBtn,opacity:!situation.trim()||loading?0.5:1, WebkitTapHighlightColor:"transparent"}}>{t.coachBtn}</button>
       </div>
       {loading && <Spinner msg={t.thinkingMsg}/>}
       {result && !result.error && (
@@ -462,8 +464,8 @@ function MeetingTab({ lang }) {
         <label style={S.label}>{t.manualLabel}</label>
         <textarea value={manualText} onChange={e=>setManualText(e.target.value)} placeholder={t.manualPlaceholder} style={S.textarea} rows={8}/>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={()=>analyze(manualText)} disabled={!manualText.trim()} style={{...S.primaryBtn,opacity:!manualText.trim()?0.5:1}}>{t.analyzeBtn}</button>
-          <button onClick={reset} style={S.secondaryBtn}>←</button>
+          <button onPointerDown={!manualText.trim() ? undefined : ()=>analyze(manualText)} style={{...S.primaryBtn,opacity:!manualText.trim()?0.5:1, WebkitTapHighlightColor:"transparent"}}>{t.analyzeBtn}</button>
+          <button onPointerDown={reset} style={{...S.secondaryBtn, WebkitTapHighlightColor:"transparent"}}>←</button>
         </div>
       </div>
     </div>
@@ -501,12 +503,12 @@ function JournalTab({ lang }) {
         <label style={S.label}>{t.ageLabel}</label>
         <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16}}>
           {AGE_IDS.map((id,i)=>(
-            <button key={id} onClick={()=>toggleAge(id)} style={{...S.chip,background:ages.includes(id)?"#8ab08a":"#f5f0ea",color:ages.includes(id)?"#fff":"#5a4a3a"}}>{t.ages[i]}</button>
+            <button key={id} onPointerDown={()=>toggleAge(id)} style={{...S.chip,background:ages.includes(id)?"#8ab08a":"#f5f0ea",color:ages.includes(id)?"#fff":"#5a4a3a", WebkitTapHighlightColor:"transparent"}}>{t.ages[i]}</button>
           ))}
         </div>
         <label style={S.label}>{t.journalLabel}</label>
-        <textarea value={reflection} onChange={e=>setReflection(e.target.value)} placeholder={t.journalPlaceholder} style={S.textarea} rows={5}/>
-        <button onClick={handleReflect} disabled={!reflection.trim()||loading} style={{...S.primaryBtn,background:"#6b9b6b",opacity:!reflection.trim()||loading?0.5:1}}>{t.reflectBtn}</button>
+        <textarea value={reflection} onChange={e=>setReflection(e.target.value)} onInput={e=>setReflection(e.target.value)} placeholder={t.journalPlaceholder} style={S.textarea} rows={5}/>
+        <button onPointerDown={!reflection.trim()||loading ? undefined : handleReflect} style={{...S.primaryBtn,background:"#6b9b6b",opacity:!reflection.trim()||loading?0.5:1, WebkitTapHighlightColor:"transparent"}}>{t.reflectBtn}</button>
       </div>
       {loading&&<Spinner msg={t.thinkingMsg}/>}
       {result&&!result.error&&(
