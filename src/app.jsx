@@ -544,7 +544,7 @@ export default function App() {
   const [tab, setTab] = useState("coach");
   const t = T[lang];
   return (
-    <div style={{minHeight:"100vh",background:"#f5f0ea",fontFamily:"Georgia,serif"}}>
+    <div style={{minHeight:"100vh",maxHeight:"100vh",overflowY:"auto",background:"#f5f0ea",fontFamily:"Georgia,serif",WebkitOverflowScrolling:"touch"}}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}*{box-sizing:border-box}textarea:focus,input:focus{border-color:#c17f5a!important}`}</style>
       <div style={{background:"#3a3028",padding:"20px 20px 14px",textAlign:"center",position:"relative"}}>
         <div style={{position:"absolute",top:16,right:16,display:"flex",gap:4}}>
